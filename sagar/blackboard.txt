@@ -1,0 +1,42 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Remove the focus from the aim login textarea and put it on the general body dso that we can start off with the top and down buttons
+2. When the user starts typing  - the default cursor should go to the selected area's login text box (To be cover in point 1)
+3. After the user types the password and presses enter the sign on button should get pressed either of the 4 common boxes or of the meebo box
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+This loops through the 4 im windows
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[*]
+
+This is just for the meebo window
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]
+
+The CNR used in google example was
+<cnr next="RIGHT l" prev="LEFT h">
+  <list title="Cycle Results" next="DOWN j" prev="UP k" fwd="n" back="p">
+    <item>
+      /html/body/table[3]/tbody/tr[not(@class)]
+    </item>
+  </list>
+</cnr>
+
+The CNR that we might use is that
+<cnr>
+  <list title="Cycle Results" next="DOWN j" prev="UP k" fwd="n" back="p">
+    <item>
+      /html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[*]
+    </item>
+  </list>
+</cnr>
+
+The JSON script will be
+  var cnrString = '<cnr>' +
+                  '  <list title="Cycle Results" next="DOWN j" prev="UP k" f' +
+                  'wd="n" back="p">' +
+                  '    <item>' +
+                  '      /html/body[@id='body']/form[@id='frontpagecontainer' +
+                  '']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='log' +
+                  'inboxescontent']/div[@id='loginboxescontainer']/div[*]' +
+                  '    </item>' +
+                  '  </list>' +
+                  '</cnr>';
