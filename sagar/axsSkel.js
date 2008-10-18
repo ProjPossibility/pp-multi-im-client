@@ -83,6 +83,21 @@ axsSkel.init = function(){
                             true);
   document.addEventListener('keypress', axsSkel.keyHandler, true);
 
+  /* The CNR is:
+  <cnr>
+	  <list title="Cycle Results" next="DOWN j" prev="UP k" fwd="n" back="p">
+		<item>
+			/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[*]
+	    </item>
+		<item>
+			/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]
+		</item>
+	</list>
+  </cnr>
+
+  The first item captures the 4 external IMs. The second item captures the Meebo login box. 
+  So item iterates through all the 5 login boxes.
+  */
   var cnrString = '<cnr>' +
                   '<list title="Cycle Results" next="DOWN j" prev="UP k" fwd' +
                   '="n" back="p">' +
