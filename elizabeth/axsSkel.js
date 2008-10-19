@@ -1,10 +1,6 @@
                                                                      
-                                                                     
-                                                                     
-                                             
 // finalized working copy of the front page
-// trying to put the fuctionality of remember me and invisible
-var version = '.015';
+var version = '.016';
 // Copyright 2008 Google Inc.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
