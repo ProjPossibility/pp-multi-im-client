@@ -1,3 +1,4 @@
+var version = '.001';
 // All the sentences commented with a trailing S are related to magnification
 
 // Copyright 2008 Google Inc.
@@ -13,7 +14,14 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
+function hi(el)
+{
+	//alert(el.elem.parentNode.parentNode.parentNode.parentNode.innerHTML);
+	el.elem.parentNode.parentNode.parentNode.getElementsByTagName("input")[0].focus();
+	axsSkel.axsJAXObj.speakTextViaNode(String(el.elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("label")[0].getAttribute("for")).split('id').join('') + ' , login');
+	//el.elem.parentNode.parentNode.parentNode.parentNode.innerHTML
+	//var im = 
+}
 /**
  * @fileoverview AxsJAX to enhance accessibility
  * of Skel. 
@@ -104,17 +112,19 @@ axsSkel.init = function(){
   var cnrString = '<cnr>' +
                   '<list title="Cycle Results" next="DOWN j" prev="UP k" fwd' +
                   '="n" back="p">' +
-                  '<item action="CALL:hi">' +
-                  '/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div' +
-                  '[@id=\'frontpage\']/div[@id=\'loginboxes\']/div[@id=\'loginboxe' +
-                  'scontent\']/div[@id=\'loginboxescontainer\']/div[*]' +
+                  //'<item action="CALL:hi">' +
+				  '<item action="CALL:hi">' +
+                  //'/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div' +
+                  //'[@id=\'frontpage\']/div[@id=\'loginboxes\']/div[@id=\'loginboxe' +
+                  //'scontent\']/div[@id=\'loginboxescontainer\']/div[*]' +
+				  '//tr[1]/td[2]/input[@type=\'text\']' +
                   '</item>' +
-                  '<item>' +
-                  '/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div' +
-                  '[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'me' +
-                  'ebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebol' +
-                  'ogincontentwrapper\']/div[2]' +
-                  '</item>' +
+                  //'<item>' +
+                  //'/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div' +
+                  //'[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'me' +
+                  //'ebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebol' +
+                  //'ogincontentwrapper\']/div[2]' +
+                  //'</item>' +
                   '</list>' +
                   '</cnr>';
 
@@ -131,7 +141,8 @@ axsSkel.init = function(){
   axsSkel.axsNavObj.setPowerKey(axsSkel.pkObj, '.');
 
   //Delete the next line when you are done with your script.
-  alert('AxsSkel loaded and initialized!');
+  //alert('AxsSkel loaded and initialized!');
+alert(version);
 };
 
 /**
@@ -142,6 +153,9 @@ axsSkel.nodeInsertedHandler = function(evt){
   var target = evt.target;
   // If the target node is something that should
   // be spoken, speak it here.
+
+
+
 };
 
 /**
@@ -167,7 +181,7 @@ axsSkel.keyHandler = function(evt){
   if (evt.ctrlKey) return true;
 
   if (evt.keyCode == 27){ // ESC
-    axsSkel.axsJAXObj.lastFocusedNode.blur();
+alert(axsSkel.axsJAXObj.lastFocusedNode.childNodes[0].NodeName);
     return false;
   }
 
@@ -214,6 +228,7 @@ axsSkel.charCodeMap = {
                        axsSkel.axsNavObj.localHelpString() +
                        axsSkel.axsNavObj.globalHelpString();
          axsSkel.axsJAXObj.speakTextViaNode(helpStr);
+//axsSkel.axsJAXObj.speakTextViaNode("yeah!");
          return false;
        }
 };
