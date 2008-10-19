@@ -1,3 +1,60 @@
+aim id box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='aimloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='aimid']
+aim password box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='aimloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='aimpassword']
+yahoo id box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='yahoologinbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='yahooid']
+yahoo password box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='yahoologinbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='yahoopassword']
+gtalk id box
+/html/body[@id='body']/span/div[@id='gtalkloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='gtalkid']
+gtalk password box
+/html/body[@id='body']/span/div[@id='gtalkloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='gtalkpassword']
+msn id box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='msnloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='msnid']
+msn password box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='msnloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='msnpassword']
+meebo username box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]/table/tbody/tr[1]/td[2]/input[@id='meeboid']
+meebo password box
+/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]/table/tbody/tr[2]/td[2]/input[@id='meebopassword']
+
+<cnr>
+  <list title="Cycle Results" next="DOWN j" prev="UP k" fwd="n" back="p">
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='aimloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='aimid']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='aimloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='aimpassword']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='yahoologinbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='yahooid']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='yahoologinbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='yahoopassword']
+	</item>
+	<item>
+		/html/body[@id='body']/span/div[@id='gtalkloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='gtalkid']
+	</item>
+	<item>
+		/html/body[@id='body']/span/div[@id='gtalkloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='gtalkpassword']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='msnloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='msnid']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='msnloginbox']/div/div/table/tbody/tr[2]/td[2]/input[@id='msnpassword']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]/table/tbody/tr[1]/td[2]/input[@id='meeboid']
+	</item>
+	<item>
+		/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[2]/table/tbody/tr[2]/td[2]/input[@id='meebopassword']
+	</item>
+  </list>
+</cnr>
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 1. Remove the focus from the aim login textarea and put it on the general body dso that we can start off with the top and down buttons

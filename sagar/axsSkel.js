@@ -1,3 +1,5 @@
+// All the sentences commented with a trailing S are related to magnification
+
 // Copyright 2008 Google Inc.
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,13 +61,13 @@ axsSkel.pkObj = null;
  * The AxsLens object that will magnify content.
  * @type AxsLens?
  */
-axsSkel.axsLensObj = null;
+//axsSkel.axsLensObj = null;S
 
 /**
  * The magnification factor for the AxsLens object.
  * @type number
  */
-axsSkel.magSize = 1.5;
+//axsSkel.magSize = 1.5;S
 
 /**
  * Initializes the AxsJAX script
@@ -97,11 +99,12 @@ axsSkel.init = function(){
 
   The first item captures the 4 external IMs. The second item captures the Meebo login box. 
   So item iterates through all the 5 login boxes.
-  */
+*/  
+
   var cnrString = '<cnr>' +
                   '<list title="Cycle Results" next="DOWN j" prev="UP k" fwd' +
                   '="n" back="p">' +
-                  '<item>' +
+                  '<item action="CALL:hi">' +
                   '/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div' +
                   '[@id=\'frontpage\']/div[@id=\'loginboxes\']/div[@id=\'loginboxe' +
                   'scontent\']/div[@id=\'loginboxescontainer\']/div[*]' +
@@ -117,9 +120,9 @@ axsSkel.init = function(){
 
   axsSkel.axsNavObj.navInit(cnrString, null);
 
-  axsSkel.axsLensObj = new AxsLens(axsSkel.axsJAXObj);
-  axsSkel.axsNavObj.setLens(axsSkel.axsLensObj);
-  axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+//  axsSkel.axsLensObj = new AxsLens(axsSkel.axsJAXObj);S
+//  axsSkel.axsNavObj.setLens(axsSkel.axsLensObj);S
+//  axsSkel.axsLensObj.setMagnification(axsSkel.magSize);S
 
   axsSkel.axsSoundObj = new AxsSound(true);
   axsSkel.axsNavObj.setSound(axsSkel.axsSoundObj);
@@ -190,18 +193,19 @@ axsSkel.keyCodeMap = {
  * @return {boolean} Always returns false to indicate 
  *                   that the keycode has been handled.
  */
+
 axsSkel.charCodeMap = {
   // Map additional keyboard behavior that involves char codes here
   // - (minus symbol)
   45 : function() {
-         axsSkel.magSize -= 0.10;
-         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+//         axsSkel.magSize -= 0.10;S
+//         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);S
          return false;
        },
   // = (equal symbol)
   61 : function() {
-         axsSkel.magSize += 0.10;
-         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+//         axsSkel.magSize += 0.10;S
+//         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);S
          return false;
        },
   // ? (question mark)
