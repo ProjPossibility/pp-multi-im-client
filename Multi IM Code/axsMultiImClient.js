@@ -30,11 +30,6 @@ function speakLogin(currentElement)
 	axsSkel.axsJAXObj.speakTextViaNode(String(currentElement.elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("label")[0].getAttribute("for")).split('id').join('') + ' , login'); 	//Speak the login box name intelligently
 }
 /*
-function speakSignUp(e)
-{
-	axsSkel.axsJAXObj.speakText('Sign Up Form Opened Please Enter Details');
-    axsSkel.axsJAXObj.clickElem(e.elem,false);
-}
  * Function box(myel) Wrapper function for creating elem element of particular node
  * Input: Current Node
  * Output: Node containing Element
@@ -44,7 +39,7 @@ function speakSignUp(e)
 	 var el = { elem : myel }
 	 return el;
  }
- // Make text readable by inserting breaks between words.
+/* Make text readable by inserting breaks between words.*/
 String.prototype.forVoice = function()
 {
 	return this.split(' ').join(' , ').split("'").join("");
@@ -91,11 +86,7 @@ function Custom_Speak(currentElement,id)
  * @fileoverview AxsJAX to enhance accessibility
  * of Skel. 
  *
- * This is a skeleton AxsJAX script - when you start using it,
- * you should do a global replace of "axsSkel" with 
- * "axsWhateverYourAppNameIs" and update this fileoverview.
  *
- * @author clchen@google.com (Charles L. Chen)
  */
 // create namespace
 var axsSkel = {};
@@ -148,13 +139,17 @@ axsSkel.magSize = 1.5;
   axsSkel.axsJAXObj = new AxsJAX(true);
   axsSkel.axsNavObj = new AxsNav(axsSkel.axsJAXObj);
 
-  //Add event listeners
+  /*
+  * /Add event listeners
+  */
   document.addEventListener('DOMNodeInserted', axsSkel.nodeInsertedHandler, true);
   document.addEventListener('DOMAttrModified', axsSkel.attrModifiedHandler, true);
   document.addEventListener('keypress', axsSkel.keyHandler, true);
   document.addEventListener('keydown', axsSkel.keyHandler, true);
 
-  // CNR Rule 
+  /*
+  * CNR Rule 
+  */
   var cnrString = '<cnr>' +
                   '<list title="AIM" hotkey="a">' +
                   '<item action="CALL:speakLogin">' +
@@ -212,12 +207,9 @@ axsSkel.magSize = 1.5;
   				  '<target title="You will be Signed In" hotkey="ENTER">'+
 				  ' /html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'meebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebologincontentwrapper\']/div[2]/div[@id=\'meebosubmit\']/table/tbody/tr/td[3]/div[@id=\'meebosignon\']/div[4]' +
 			      '</target> ' +
-  				  //'<target title="" hotkey="s">'+
-				  //'/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'meebologinbox\']/div[@id=\'meebosignupcontent\']/div[@id=\'signupnow\']' +
-			      //'</target> ' +
                   '</list>' +
                   '</cnr>';
-
+/* Loading CNR into Javascript*/
   axsSkel.axsNavObj.navInit(cnrString, null);
  
   /* Setting Magnification Objects */
@@ -262,7 +254,8 @@ axsSkel.clickHandler = function(evt)
 };
 
 
-// Calls out buddy name if evt matches required attributes of the page
+/*
+* Calls out buddy name if evt matches required attributes of the page
 axsSkel.CallOutBuddyName = function(target)
 {
 	if( target.parentNode.parentNode.parentNode.parentNode )
@@ -290,17 +283,19 @@ function catchevent() {
 axsSkel.nodeInsertedHandler = function(evt)
 {
   var target = evt.target;
-  // If the target node is something that should
-  // be spoken, speak it here.
+  /*
+  * If the target node is something that should
+  * be spoken, speak it here.
+  */
 
-
+/*
 	if( target.parentNode.parentNode ) 
 		if( target.parentNode.parentNode.getAttribute("id") == "buddies" )
 		{
 			target.addEventListener('DOMAttrModified',axsSkel.attrModifiedHandler, true);
 			Log('added event handler' + target.tagName);;
 		}
-
+*/
 };
 
 /**
@@ -313,7 +308,9 @@ axsSkel.attrModifiedHandler = function(evt){
   var oldVal = evt.prevValue;
   var target = evt.target;
 	var sTarget = String(evt.target.tagName).toLowerCase();
-	 // Speak out the error message upon login. - Saumil Start
+	 /*
+	 * Speak out the error message upon login
+	 */
 
   if( evt.target.getAttribute("id") == "loginerrormessage" )
 
@@ -328,8 +325,6 @@ axsSkel.attrModifiedHandler = function(evt){
                                 }
 
                 }
-
-  // Speak out the error message upon login. - Saumil End
 };
 /**
  * Handler for key events. 
@@ -339,7 +334,7 @@ axsSkel.attrModifiedHandler = function(evt){
 axsSkel.keyHandler = function(evt){
   //If Ctrl is held, it must be for some AT. 
   if (evt.ctrlKey) return true;
-if(evt.shiftKey && evt.keyCode==65)
+if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
 	{// Shortcut Key Shift + A for Add Buddy
 	  if( evt.preventDefault() )
 		{
@@ -350,30 +345,21 @@ if(evt.shiftKey && evt.keyCode==65)
 	Custom_Speak(box(node[0]),1);
 	}
 	
-	if(evt.shiftKey && evt.keyCode==73)
+	if(evt.shiftKey && (evt.keyCode==73 || evt.keyCode==105))
 	{
-		//Shortcut Key Shift + R for Remove Buddy
+		//Shortcut Key Shift + I for IM Anyone
 		if( evt.preventDefault() )
 		{
 			evt.preventDefault(); 
 		}
-				//Evaluate Xpath corresponding to Remove Buddy Event.
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[2]",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),2);
-	}
-		//Shortcut Key Shift + C for C
-	if(evt.shiftKey && evt.keyCode==67)
-	{
-		if( evt.preventDefault() )
-		{
-			evt.preventDefault(); 
-		}
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);
+//Evaluate Xpath corresponding to Remove Buddy Event.
+	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);			
 	Custom_Speak(box(node[0]),3);
 	}
-	// Shortcut Key Shift + R for Start or Join Group Chat
-	if(evt.shiftKey && evt.keyCode==82)
+	
+	if(evt.shiftKey && (evt.keyCode==67 || evt.keyCode==99))
 	{
+			//Shortcut Key Shift + C for Start Group Chat or Chat
 		if( evt.preventDefault() )
 		{
 			evt.preventDefault(); 
@@ -381,8 +367,19 @@ if(evt.shiftKey && evt.keyCode==65)
 	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[4]",document.getElementsByTagName('body')[0]);
 	Custom_Speak(box(node[0]),4);
 	}
+	// Shortcut Key Shift + R for Remove Buddy
+	if(evt.shiftKey && (evt.keyCode==82 || evt.keyCode==114))
+	{
+		if( evt.preventDefault() )
+		{
+			evt.preventDefault(); 
+		}
+	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[2]",document.getElementsByTagName('body')[0]);
+
+	Custom_Speak(box(node[0]),2);
+	}
 	// Shortcut Key Shift+ M for Sign On 
-	if(evt.shiftKey && evt.keyCode==77)
+	if(evt.shiftKey && (evt.keyCode==77 || evt.keyCode==109))
 	{
 		if( evt.preventDefault() )
 		{
@@ -392,7 +389,7 @@ if(evt.shiftKey && evt.keyCode==65)
 	Custom_Speak(box(node[0]),5);
 	}
 	//Shortcut Key Shift +N for Sign Out 
-	if(evt.shiftKey && evt.keyCode==78)
+	if(evt.shiftKey && (evt.keyCode==78 || evt.keyCode==110))
 	{
 		if( evt.preventDefault() )
 		{
@@ -402,7 +399,7 @@ if(evt.shiftKey && evt.keyCode==65)
 	Custom_Speak(box(node[0]),6);
 	}
 	// Shortcut Key Shift + Z for Sign Up Now 
-	if(evt.shiftKey && evt.keyCode==90)
+	if(evt.shiftKey && (evt.keyCode==90 || evt.keyCode==122))
 	{
 		if( evt.preventDefault() )
 		{
@@ -418,6 +415,7 @@ if(evt.shiftKey && evt.keyCode==65)
 		{
 		evt.preventDefault();
 		}
+         axsSkel.axsJAXObj.speakText('Please Enter the Friend ID you want to search');
 		document.getElementById('bltoolbar').getElementsByTagName('input')[0].focus();
 	}
 
