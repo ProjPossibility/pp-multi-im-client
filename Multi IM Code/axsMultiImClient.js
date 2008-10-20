@@ -45,6 +45,8 @@ String.prototype.forVoice = function()
 {
 	return this.split(' ').join(' , ').split("'").join("");
 }
+/* Trim String */
+String.prototype.Trim = function() { return this.replace(/(^\s*)|(\s*$)/g, ""); };
 
 /*
  * Function Custom_Speak(currentElement,id) Speak the name of the short cut key activated intelligently
@@ -53,36 +55,36 @@ String.prototype.forVoice = function()
 */
 
 function Custom_Speak(currentElement,id)
+{
+	var textToSpeak='';
+	//alert(e.elem);
+	switch(id)
 	{
-		var textToSpeak='';
-		//alert(e.elem);
-		switch(id)
-		{
-			case 1:
-				textToSpeak="Add Buddy Clicked Please provide your buddy's name, your user logon name, and the group where you would like to add your buddy.";
-				break;
-			case 2:
-				textToSpeak="Do you want to delete this contact ?";
-				break;
-			case 3:
-				textToSpeak="Please select the logon account from which you'd like to IM your buddy.";
-				break;
-			case 4:
-				textToSpeak="Please enter the name of a chat room you want to start or join.";
-				break;
-			case 5:
-				textToSpeak="Please select a network service, username, and password for your new connection.";
-				break;
-		    case 6:
-				textToSpeak="Signing out from account.";
-			    break;
-			case 7:
-				textToSpeak="Sign Up For a new Account . ";
-			    break;
-		}
-         axsSkel.axsJAXObj.speakText(textToSpeak);
-		 axsSkel.axsJAXObj.clickElem(currentElement.elem,false);
+		case 1:
+			textToSpeak="Add Buddy Clicked Please provide your buddy's name, your user logon name, and the group where you would like to add your buddy.";
+			break;
+		case 2:
+			textToSpeak="Do you want to delete this contact ?";
+			break;
+		case 3:
+			textToSpeak="Please select the logon account from which you'd like to IM your buddy.";
+			break;
+		case 4:
+			textToSpeak="Please enter the name of a chat room you want to start or join.";
+			break;
+		case 5:
+			textToSpeak="Please select a network service, username, and password for your new connection.";
+			break;
+		case 6:
+			textToSpeak="Signing out from account.";
+			break;
+		case 7:
+			textToSpeak="Sign Up For a new Account . ";
+			break;
 	}
+	 axsSkel.axsJAXObj.speakText(textToSpeak);
+	 axsSkel.axsJAXObj.clickElem(currentElement.elem,false);
+}
 /**
  * @fileoverview AxsJAX to enhance accessibility
  * of Skel. 
@@ -147,6 +149,10 @@ axsSkel.magSize = 1.5;
   document.addEventListener('DOMAttrModified', axsSkel.attrModifiedHandler, true);
   document.addEventListener('keypress', axsSkel.keyHandler, true);
   document.addEventListener('keydown', axsSkel.keyHandler, true);
+	document.addEventListener('focus', axsSkel.focusHandler, true);
+	document.addEventListener('blur', axsSkel.blurHandler, true);
+	document.addEventListener('mouseover', axsSkel.buddyListHover, true);
+
 
   /*
   * CNR Rule 
@@ -232,10 +238,10 @@ axsSkel.magSize = 1.5;
  */
   axsSkel.nodeInsertedHandler = function(evt){
   var target = evt.target;
-  // If the target node is something that should
-  // be spoken, speak it here.
 
-var xpath = '//*[@aria-live]';
+
+	// Remove default aria-live attributes.
+  var xpath = '//*[@aria-live]';
 	var liveRegions = axsSkel.axsJAXObj.evalXPath(xpath,document.body);
 	for (var i=0, lr; lr = liveRegions[i]; i++){ lr.removeAttribute('aria-live'); }
 
@@ -256,26 +262,37 @@ axsSkel.clickHandler = function(evt)
 
 
 /*
-* Calls out buddy name if evt matches required attributes of the page
+	@buddyListHover - Speak out the name of the person on whose name the event happened
+	@params (evt) event
+*/
+axsSkel.buddyListHover = function(evt)
+{
+	var sTarget = String(evt.target.tagName).toLowerCase();
+	// Try to call out buddy name if possible
+		if( sTarget == 'div' )
+			axsSkel.CallOutBuddyName(evt.target.childNodes[1]);
+};
+
+
+/**
+ * Calls out buddy name if evt matches page
+ * @param {Object} evt a DOM element
+ */
 axsSkel.CallOutBuddyName = function(target)
 {
-	if( target.parentNode.parentNode.parentNode.parentNode )
-	{
-		if( target.parentNode.parentNode.parentNode.parentNode.getAttribute("id") != "offlinebgroup-meebo-offline-group" )
+	try
+	{ 
+		if( target.parentNode.parentNode.parentNode.parentNode )
 		{
-			//alert( target.parentNode.parentNode.parentNode.innerHTML );
-			//alert( target.firstChild.nodeValue );
-			axsSkel.axsJAXObj.speakText(target.firstChild.nodeValue);
+			if( target.parentNode.parentNode.parentNode.parentNode.getAttribute("id") != "offlinebgroup-meebo-offline-group" )
+			{
+				//alert( target.parentNode.parentNode.parentNode.innerHTML );
+				//alert( target.firstChild.nodeValue );
+				axsSkel.axsJAXObj.speakText(target.firstChild.nodeValue);
+			}
 		}
-	}
+	} catch(e) { }
 }
-/*
-function catchevent() {
-	eventSrcID=(event.srcElement)?event.srcElement.id:'undefined';
-	eventtype=event.type;
-	status=eventSrcID+' has received a '+eventtype+' event.';
-}
-*/
 
 /**
  * Handler for DOMNodeInserted events. 
@@ -289,14 +306,6 @@ axsSkel.nodeInsertedHandler = function(evt)
   * be spoken, speak it here.
   */
 
-/*
-	if( target.parentNode.parentNode ) 
-		if( target.parentNode.parentNode.getAttribute("id") == "buddies" )
-		{
-			target.addEventListener('DOMAttrModified',axsSkel.attrModifiedHandler, true);
-			Log('added event handler' + target.tagName);;
-		}
-*/
 };
 
 /**
@@ -309,42 +318,41 @@ axsSkel.attrModifiedHandler = function(evt){
   var oldVal = evt.prevValue;
   var target = evt.target;
 	var sTarget = String(evt.target.tagName).toLowerCase();
+
 	 /*
 	 * Speak out the error message upon login
 	 */
-
   if( evt.target.getAttribute("id") == "loginerrormessage" )
-
-                {
-
-                  if( target.innerHTML.length > 0 )
-
-                                {
-
-                                  axsSkel.axsJAXObj.speakText(target.innerHTML);
-
-                                }
-
-                }
+	{
+			if( target.innerHTML.length > 0 )
+			{
+				axsSkel.axsJAXObj.speakText(target.innerHTML);
+			}
+		}
 };
 /**
  * Handler for key events. 
  * @param {Object} evt A keypress event.
  * @return {boolean} If true, the event should be propagated.
  */
-axsSkel.keyHandler = function(evt){
-  //If Ctrl is held, it must be for some AT. 
+axsSkel.keyHandler = function(evt)
+{
+	var sTarget = String(evt.target.tagName).toLowerCase();
+
+	//If Ctrl is held, it must be for some AT. 
   if (evt.ctrlKey) return true;
-if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
+	
+	if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
 	{// Shortcut Key Shift + A for Add Buddy
 	  if( evt.preventDefault() )
 		{
 			evt.preventDefault(); 
 		}
 		//Evaluate Xpath corresponding to Add Buddy Event.
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[1]",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),1);
+		var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[1]",document.getElementsByTagName('body')[0]);
+		Custom_Speak(box(node[0]),1);
 	}
+
 	
 	if(evt.shiftKey && (evt.keyCode==73 || evt.keyCode==105))
 	{
@@ -353,11 +361,41 @@ if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
 		{
 			evt.preventDefault(); 
 		}
-//Evaluate Xpath corresponding to Remove Buddy Event.
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);			
-	Custom_Speak(box(node[0]),3);
+    //Evaluate Xpath corresponding to Remove Buddy Event.
+	  var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);			
+	  Custom_Speak(box(node[0]),3);
 	}
-	
+
+	// ----------------------------------------------------------------------	
+	// Shift + S  plays the current text entered by the user
+	if (evt.shiftKey && evt.keyCode == 83) 
+	{
+		// key shouldn't come in the textarea 
+		if( evt.preventDefault() )
+		{
+			evt.preventDefault(); 
+		}
+		if( sTarget == "textarea" && evt.target.className == 'uiImMessage' )
+		{
+			if( evt.target.parentNode.parentNode.parentNode.parentNode )
+			{
+				var s = String(evt.target.value);
+				if( s.length > 0 )
+				{
+					// this window is an IM Window. get the person's name and speak it out.
+					var user = String(evt.target.parentNode.parentNode.parentNode.parentNode.getAttribute("caption"));
+					axsSkel.axsJAXObj.speakText('For ' + user.forVoice() + ', you wrote , ' + s);
+				} 
+				else 
+				{
+					axsSkel.axsJAXObj.speakText('No text entered.');
+				}
+			}
+		}
+		return false;
+	}
+
+
 	if(evt.shiftKey && (evt.keyCode==67 || evt.keyCode==99))
 	{
 			//Shortcut Key Shift + C for Start Group Chat or Chat
@@ -477,6 +515,87 @@ if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
 	}
 
 
+
+	// ----------------------------------------------------------------------
+	// Shift + P  Plays out the current conversation.
+	if (evt.shiftKey && evt.keyCode == 80) 
+	{
+		// key shouldn't come in the textarea 
+		if( evt.preventDefault() )
+		{
+			evt.preventDefault(); 
+		}
+		if( sTarget == "textarea" && evt.target.className == 'uiImMessage' )
+		{
+			if( evt.target.parentNode.parentNode.parentNode.parentNode )
+			{
+				try{
+
+					var msgWin = evt.target.parentNode.parentNode.parentNode.parentNode;
+					var msgName = msgWin.getAttribute("caption");
+					//alert(4);
+					var msgChatLog = msgWin.childNodes[0].childNodes[4];
+					//alert( msgChatLog.innerHTML );
+					//alert(5);
+					////div[@id='gtalk-brian.vdsouza@gmail.com:malani@gmail.com/meebo-im']/div/div//span/text()
+					var msgs = axsSkel.axsJAXObj.evalXPath("//div[@class='uiImHistory']//span/text()",msgWin);
+					//alert(msgs.length);
+					//alert(msgs.join(', '));
+
+					var myID = String(msgWin.getAttribute("id"));
+					myID = myID.substr( myID.indexOf(':')+1, myID.length);
+					if( myID.indexOf('-') > -1 ) { myID = myID.substr( 0, myID.indexOf('-') ); }
+					//if( myID.indexOf('@') > -1 ) { myID = myID.substr( 0, myID.indexOf('@') ); }
+					
+					//alert( myID );
+				
+					var convo_text = [];
+					var u, m, t;
+					for( var i=0; i < msgs.length; i+=2 )
+					{	u = '';
+						m = '';
+						t = '';
+
+						u = String(msgs[i].nodeValue);
+						m = String(msgs[i+1].nodeValue);
+						t = u.substr(1, 5).Trim();
+						//if( u.lastIndexOf(':') > -1 ) { u = u.substr(0, u.lastIndexOf(':')); }
+						//if( u.indexOf('@') > -1 ) { u = u.substr(0, u.indexOf('@')); }
+						//u = u.replace(/\[\d{2}([:])\d{2}\]/gi, '').Trim();
+						u = u.substr( 8, u.length );
+
+						//alert( t + ' ' + u + '\n' + m );
+
+						if( u.toLowerCase() == myID ) u = 'You';
+						convo_text.push( 'at ' + t + ', ' + u + ' said, ' + m );
+
+					}
+				}
+				catch(e){}
+				if( convo_text.length == 0 )
+					axsSkel.axsJAXObj.speakText('No messages have been exchanged as yet.');
+				else
+					axsSkel.axsJAXObj.speakText(convo_text.join(', '));
+				//Log(convo_text.join(']['));
+				
+			}
+		}
+		return false;
+	}
+
+	// Try to call out buddy name if clicked upon in the list.
+	if( evt.keyCode == 38 || evt.keyCode == 40 )
+	{
+		if( sTarget == 'span')
+		{
+			axsSkel.CallOutBuddyName(evt.target);
+		}
+	}
+
+
+
+
+
     if (evt.keyCode == 27){ // ESC
     axsSkel.axsJAXObj.lastFocusedNode.blur();
     return false;
@@ -576,5 +695,52 @@ axsSkel.charCodeMap = {
 		  return false;
         }
 };
+
+/**
+ * When an input blank has focus, the keystrokes should go into the blank
+ * and should not trigger hot key commands.
+ * @param {Object} evt A Focus event
+ */
+axsSkel.focusHandler = function(evt)
+{
+	var sTarget = String(evt.target.tagName).toLowerCase();
+  axsSkel.lastFocusedNode = evt.target;
+  if ((evt.target.tagName == 'INPUT') ||
+      (evt.target.tagName == 'TEXTAREA')){
+    axsSkel.inputFocused = true;
+  }
+
+
+	// ----------------------------------------------------------------------
+	// Call out user's name when an im-window is focussed.
+	if( evt.target.tagName == "TEXTAREA" ) 
+	{
+		if( evt.target.className == 'uiImMessage' )
+		{
+			// this window is an IM Window. get the person's name and speak it out.
+			var user = String(evt.target.parentNode.parentNode.parentNode.parentNode.getAttribute("caption"));
+			//alert(user);
+			axsSkel.axsJAXObj.speakText('Talking to ' + user.forVoice());
+		}
+	}
+
+
+
+};
+
+/**
+ * When no input blanks have focus, the keystrokes should trigger hot key
+ * commands.
+ * @param {Object} evt A Blur event
+ */
+axsSkel.blurHandler = function (evt){
+  axsSkel.lastFocusedNode = null;
+  if ((evt.target.tagName == 'INPUT') ||
+      (evt.target.tagName == 'TEXTAREA')){
+    axsSkel.inputFocused = false;
+  }
+};
+
+
 
 axsSkel.init();
