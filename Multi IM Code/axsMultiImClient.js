@@ -23,6 +23,7 @@
  * Input: The current list item element passed from the CNR rule
  * Output: None
  *
+ *  THIS IS THE LATEST VERSION
  */
 function speakLogin(currentElement)
 {
