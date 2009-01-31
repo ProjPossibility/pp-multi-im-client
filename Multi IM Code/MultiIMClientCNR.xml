@@ -39,4 +39,12 @@
 			/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'meebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebologincontentwrapper\']/div[2]/div[@id=\'meebosubmit\']/table/tbody/tr/td[3]/div[@id=\'meebosignon\']/div[4]
 		</target>
 	</list>
+		<list title="Myspace" hotkey="s">
+		<item action="CALL:speakLogin">
+			/html/body[@id='body']/form[@id='frontpagecontainer']/div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/div[@id='loginboxescontainer']/div[@id='myspaceloginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='myspaceid']
+		</item>
+		<target title="You will be Signed In" hotkey="ENTER">
+			/html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'meebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebologincontentwrapper\']/div[2]/div[@id=\'meebosubmit\']/table/tbody/tr/td[3]/div[@id=\'meebosignon\']/div[4]
+		</target>
+	</list>
 </cnr>
