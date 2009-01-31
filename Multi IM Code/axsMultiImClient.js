@@ -28,8 +28,10 @@
 function speakLogin(currentElement)
 {
 	currentElement.elem.parentNode.parentNode.parentNode.getElementsByTagName("input")[0].focus(); 	//Set focus on the selected login box
-	axsSkel.axsJAXObj.speakTextViaNode(String(currentElement.elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("label")[0].getAttribute("for")).split('id').join('') + ' , login'); 	//Speak the login box name intelligently
+	axsMeebo.axsJAXObj.speakTextViaNode(String(currentElement.elem.parentNode.parentNode.parentNode.parentNode.getElementsByTagName("label")[0].getAttribute("for")).split('id').join('') + ' , login'); 	//Speak the login box name intelligently
 }
+
+
 /*
  * Function box(myel) Wrapper function for creating elem element of particular node
  * Input: Current Node
@@ -40,11 +42,14 @@ function speakLogin(currentElement)
 	 var el = { elem : myel }
 	 return el;
  }
+
+
 /* Make text readable by inserting breaks between words.*/
 String.prototype.forVoice = function()
 {
 	return this.split(' ').join(' , ').split("'").join("");
 }
+
 /* Trim String */
 String.prototype.Trim = function() { return this.replace(/(^\s*)|(\s*$)/g, ""); };
 
@@ -53,7 +58,6 @@ String.prototype.Trim = function() { return this.replace(/(^\s*)|(\s*$)/g, ""); 
  * Input: The current list item element passed from the CNR rule
  * Output: None 
 */
-
 function Custom_Speak(currentElement,id)
 {
 	var textToSpeak='';
@@ -82,8 +86,8 @@ function Custom_Speak(currentElement,id)
 			textToSpeak="Sign Up For a new Account . ";
 			break;
 	}
-	 axsSkel.axsJAXObj.speakText(textToSpeak);
-	 axsSkel.axsJAXObj.clickElem(currentElement.elem,false);
+	 axsMeebo.axsJAXObj.speakText(textToSpeak);
+	 axsMeebo.axsJAXObj.clickElem(currentElement.elem,false);
 }
 /**
  * @fileoverview AxsJAX to enhance accessibility
@@ -92,70 +96,71 @@ function Custom_Speak(currentElement,id)
  *
  */
 // create namespace
-var axsSkel = {};
+var axsMeebo = {};
 
 /**
  * These are strings to be spoken to the user
  * @type string
  */
-axsSkel.HELP = 'The following shortcut keys are available. ';
+axsMeebo.HELP = 'The following shortcut keys are available. ';
 
 /**
  * The AxsJAX object that will do the tickling and speaking.
  * @type AxsJAX?
  */
-axsSkel.axsJAXObj = null;
+axsMeebo.axsJAXObj = null;
 /**
  * The AxsNav object that will handle navigation.
  * @type AxsNav?
  */
-axsSkel.axsNavObj = null;
+axsMeebo.axsNavObj = null;
 
 /**
  * The AxsSound object that will play earcons
  * @type AxsSound?
  */
-axsSkel.axsSoundObj = null;
+axsMeebo.axsSoundObj = null;
 
 /**
  * The PowerKey object that will provide a quick search
  * @type PowerKey?
  */
-axsSkel.pkObj = null;
+axsMeebo.pkObj = null;
 
 /**
  * The AxsLens object that will magnify content.
  * @type AxsLens?
  */
-axsSkel.axsLensObj = null;
+axsMeebo.axsLensObj = null;
 
 /**
  * The magnification factor for the AxsLens object.
  * @type number
  */
-axsSkel.magSize = 1.5;
+axsMeebo.magSize = 1.5;
 
 /**
  * Initializes the AxsJAX script
  */
-  axsSkel.init = function(){
-  axsSkel.axsJAXObj = new AxsJAX(true);
-  axsSkel.axsNavObj = new AxsNav(axsSkel.axsJAXObj);
+axsMeebo.init = function()
+{
+  axsMeebo.axsJAXObj = new AxsJAX(true);
+  axsMeebo.axsNavObj = new AxsNav(axsMeebo.axsJAXObj);
 
   /*
-  * /Add event listeners
+  * Add event listeners
   */
-  document.addEventListener('DOMNodeInserted', axsSkel.nodeInsertedHandler, true);
-  document.addEventListener('DOMAttrModified', axsSkel.attrModifiedHandler, true);
-  document.addEventListener('keypress', axsSkel.keyHandler, true);
-  document.addEventListener('keydown', axsSkel.keyHandler, true);
-	document.addEventListener('focus', axsSkel.focusHandler, true);
-	document.addEventListener('blur', axsSkel.blurHandler, true);
-	document.addEventListener('mouseover', axsSkel.buddyListHover, true);
+  document.addEventListener('DOMNodeInserted', axsMeebo.nodeInsertedHandler, true);
+  document.addEventListener('DOMAttrModified', axsMeebo.attrModifiedHandler, true);
+  document.addEventListener('keypress', axsMeebo.keyHandler, true);
+  document.addEventListener('keydown', axsMeebo.keyHandler, true);
+	document.addEventListener('focus', axsMeebo.focusHandler, true);
+	document.addEventListener('blur', axsMeebo.blurHandler, true);
+	document.addEventListener('mouseover', axsMeebo.buddyListHover, true);
 
 
   /*
-  * CNR Rule 
+  * CNR Rules 
   */
   var cnrString = '<cnr>' +
                   '<list title="AIM" hotkey="a">' +
@@ -214,49 +219,64 @@ axsSkel.magSize = 1.5;
   				  '<target title="You will be Signed In" hotkey="ENTER">'+
 				  ' /html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[3]/div[@id=\'meebologin\']/div[@id=\'meebologinbox\']/div[@id=\'meebologincontent\']/div[@id=\'meebologincontentwrapper\']/div[2]/div[@id=\'meebosubmit\']/table/tbody/tr/td[3]/div[@id=\'meebosignon\']/div[4]' +
 			      '</target> ' +
-                  '</list>' +
+            '</list>' +
+		              '<list title="MySpace" hotkey="s">' +
+                  '<item action="CALL:speakLogin">' +
+                  "/html/body[@id='body']/form[@id='frontpagecontainer']/div" +
+                  "[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxe" +
+                  "scontent']/div[@id='loginboxescontainer']/div[@id='myspace" +
+                  "loginbox']/div/div/table/tbody/tr[1]/td[2]/input[@id='myspaceid']" +
+                  '</item>' +
+    				  '<target title="" hotkey="ENTER">'+
+				  ' /html/body[@id=\'body\']/form[@id=\'frontpagecontainer\']/div[@id=\'frontpage\']/div[@id=\'loginboxes\']/div[@id=\'loginboxescontent\']/div[@id=\'imsignon\']' +
+			      '</target> ' +
+				  '</list>'+
                   '</cnr>';
 /* Loading CNR into Javascript*/
-  axsSkel.axsNavObj.navInit(cnrString, null);
+  axsMeebo.axsNavObj.navInit(cnrString, null);
  
   /* Setting Magnification Objects */
-  axsSkel.axsLensObj = new AxsLens(axsSkel.axsJAXObj);
-  axsSkel.axsNavObj.setLens(axsSkel.axsLensObj);
-  axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+  axsMeebo.axsLensObj = new AxsLens(axsMeebo.axsJAXObj);
+  axsMeebo.axsNavObj.setLens(axsMeebo.axsLensObj);
+  axsMeebo.axsLensObj.setMagnification(axsMeebo.magSize);
 
   /* Setting Sound Objects */
-  axsSkel.axsSoundObj = new AxsSound(true);
-  axsSkel.axsNavObj.setSound(axsSkel.axsSoundObj);
+  axsMeebo.axsSoundObj = new AxsSound(true);
+  axsMeebo.axsNavObj.setSound(axsMeebo.axsSoundObj);
 
-  axsSkel.pkObj = new PowerKey('available actions', axsSkel.axsJAXObj);
-  axsSkel.axsNavObj.setPowerKey(axsSkel.pkObj, '.');
+  axsMeebo.pkObj = new PowerKey('available actions', axsMeebo.axsJAXObj);
+  axsMeebo.axsNavObj.setPowerKey(axsMeebo.pkObj, '.');
 };
 
 /**
  * Handler for DOMNodeInserted events. 
  * @param {Object} evt A DOMNodeInserted event.
  */
-  axsSkel.nodeInsertedHandler = function(evt){
-  var target = evt.target;
+axsMeebo.nodeInsertedHandler = function(evt){
+	var target = evt.target;
 
 
 	// Remove default aria-live attributes.
-  var xpath = '//*[@aria-live]';
-	var liveRegions = axsSkel.axsJAXObj.evalXPath(xpath,document.body);
+	var xpath = '//*[@aria-live]';
+	var liveRegions = axsMeebo.axsJAXObj.evalXPath(xpath,document.body);
 	for (var i=0, lr; lr = liveRegions[i]; i++){ lr.removeAttribute('aria-live'); }
 
-  //Delete the next line when you are done with your script.
-  alert('AxsSkel loaded and initialized!');
+	//Delete the next line when you are done with your script.
+	alert('axsMeebo loaded and initialized!');
 };
 
-axsSkel.clickHandler = function(evt)
+/**
+ * Handler for click events. 
+ * @param {Object} evt A click event.
+ */
+axsMeebo.clickHandler = function(evt)
 {
 	var sTarget = String(evt.target.tagName).toLowerCase();
 
 	// Try to call out buddy name if clicked upon in the list.
 	if( sTarget == 'span')
 	{
-		axsSkel.CallOutBuddyName(evt.target);
+		axsMeebo.callOutBuddyName(evt.target);
 	}
 };
 
@@ -265,12 +285,12 @@ axsSkel.clickHandler = function(evt)
 	@buddyListHover - Speak out the name of the person on whose name the event happened
 	@params (evt) event
 */
-axsSkel.buddyListHover = function(evt)
+axsMeebo.buddyListHover = function(evt)
 {
 	var sTarget = String(evt.target.tagName).toLowerCase();
 	// Try to call out buddy name if possible
 		if( sTarget == 'div' )
-			axsSkel.CallOutBuddyName(evt.target.childNodes[1]);
+			axsMeebo.callOutBuddyName(evt.target.childNodes[1]);
 };
 
 
@@ -278,7 +298,7 @@ axsSkel.buddyListHover = function(evt)
  * Calls out buddy name if evt matches page
  * @param {Object} evt a DOM element
  */
-axsSkel.CallOutBuddyName = function(target)
+axsMeebo.callOutBuddyName = function(target)
 {
 	try
 	{ 
@@ -288,7 +308,7 @@ axsSkel.CallOutBuddyName = function(target)
 			{
 				//alert( target.parentNode.parentNode.parentNode.innerHTML );
 				//alert( target.firstChild.nodeValue );
-				axsSkel.axsJAXObj.speakText(target.firstChild.nodeValue);
+				axsMeebo.axsJAXObj.speakText(target.firstChild.nodeValue);
 			}
 		}
 	} catch(e) { }
@@ -298,7 +318,7 @@ axsSkel.CallOutBuddyName = function(target)
  * Handler for DOMNodeInserted events. 
  * @param {Object} evt A DOMNodeInserted event.
  */
-axsSkel.nodeInsertedHandler = function(evt)
+axsMeebo.nodeInsertedHandler = function(evt)
 {
   var target = evt.target;
   /*
@@ -312,7 +332,7 @@ axsSkel.nodeInsertedHandler = function(evt)
  * Handler for DOMAttrModified events. 
  * @param {Object} evt A DOMAttrModified event.
  */
-axsSkel.attrModifiedHandler = function(evt){
+axsMeebo.attrModifiedHandler = function(evt){
   var attrib = evt.attrName;
   var newVal = evt.newValue;
   var oldVal = evt.prevValue;
@@ -326,7 +346,7 @@ axsSkel.attrModifiedHandler = function(evt){
 	{
 			if( target.innerHTML.length > 0 )
 			{
-				axsSkel.axsJAXObj.speakText(target.innerHTML);
+				axsMeebo.axsJAXObj.speakText(target.innerHTML);
 			}
 		}
 };
@@ -335,12 +355,12 @@ axsSkel.attrModifiedHandler = function(evt){
  * @param {Object} evt A keypress event.
  * @return {boolean} If true, the event should be propagated.
  */
-axsSkel.keyHandler = function(evt)
+axsMeebo.keyHandler = function(evt)
 {
 	var sTarget = String(evt.target.tagName).toLowerCase();
 
 	//If Ctrl is held, it must be for some AT. 
-  if (evt.ctrlKey) return true;
+  //if (evt.ctrlKey) return true;
 	
 	if(evt.shiftKey && ( evt.keyCode==65 || evt.keyCode==97))
 	{// Shortcut Key Shift + A for Add Buddy
@@ -349,24 +369,22 @@ axsSkel.keyHandler = function(evt)
 			evt.preventDefault(); 
 		}
 		//Evaluate Xpath corresponding to Add Buddy Event.
-		var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[1]",document.getElementsByTagName('body')[0]);
+		var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[1]",document.getElementsByTagName('body')[0]);
 		Custom_Speak(box(node[0]),1);
 	}
 
-	
+	//Shortcut Key Shift + I for IM Anyone	
 	if(evt.shiftKey && (evt.keyCode==73 || evt.keyCode==105))
 	{
-		//Shortcut Key Shift + I for IM Anyone
 		if( evt.preventDefault() )
 		{
 			evt.preventDefault(); 
 		}
     //Evaluate Xpath corresponding to Remove Buddy Event.
-	  var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);			
+	  var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[3]",document.getElementsByTagName('body')[0]);			
 	  Custom_Speak(box(node[0]),3);
 	}
 
-	// ----------------------------------------------------------------------	
 	// Shift + S  plays the current text entered by the user
 	if (evt.shiftKey && evt.keyCode == 83) 
 	{
@@ -384,28 +402,29 @@ axsSkel.keyHandler = function(evt)
 				{
 					// this window is an IM Window. get the person's name and speak it out.
 					var user = String(evt.target.parentNode.parentNode.parentNode.parentNode.getAttribute("caption"));
-					axsSkel.axsJAXObj.speakText('For ' + user.forVoice() + ', you wrote , ' + s);
+					axsMeebo.axsJAXObj.speakText('For ' + user.forVoice() + ', you wrote , ' + s);
 				} 
 				else 
 				{
-					axsSkel.axsJAXObj.speakText('No text entered.');
+					axsMeebo.axsJAXObj.speakText('No text entered.');
 				}
 			}
 		}
 		return false;
 	}
 
-
+	//Shortcut Key Shift + C for Start Group Chat or Chat
 	if(evt.shiftKey && (evt.keyCode==67 || evt.keyCode==99))
 	{
-			//Shortcut Key Shift + C for Start Group Chat or Chat
 		if( evt.preventDefault() )
 		{
 			evt.preventDefault(); 
 		}
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[4]",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),4);
+		var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[4]",document.getElementsByTagName('body')[0]);
+		Custom_Speak(box(node[0]),4);
 	}
+
+
 	// Shortcut Key Shift + R for Remove Buddy
 	if(evt.shiftKey && (evt.keyCode==82 || evt.keyCode==114))
 	{
@@ -413,10 +432,12 @@ axsSkel.keyHandler = function(evt)
 		{
 			evt.preventDefault(); 
 		}
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[2]",document.getElementsByTagName('body')[0]);
+		var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[@id='bltoolbar']/div[2]",document.getElementsByTagName('body')[0]);
 
-	Custom_Speak(box(node[0]),2);
+		Custom_Speak(box(node[0]),2);
 	}
+
+	
 	// Shortcut Key Shift+ M for Sign On 
 	if(evt.shiftKey && (evt.keyCode==77 || evt.keyCode==109))
 	{
@@ -424,9 +445,11 @@ axsSkel.keyHandler = function(evt)
 		{
 			evt.preventDefault(); 
 		}
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[4]/div[@id='signonbtn']/div[2]",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),5);
+		var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[4]/div[@id='signonbtn']/div[2]",document.getElementsByTagName('body')[0]);
+		Custom_Speak(box(node[0]),5);
 	}
+
+	
 	//Shortcut Key Shift +N for Sign Out 
 	if(evt.shiftKey && (evt.keyCode==78 || evt.keyCode==110))
 	{
@@ -434,9 +457,11 @@ axsSkel.keyHandler = function(evt)
 		{
 			evt.preventDefault(); 
 		}
-	var node=axsSkel.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[4]/div[@id='signoffmenu']",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),6);
+		var node=axsMeebo.axsJAXObj.evalXPath("//div[@id='buddylistwin']/div[@id='content']/div[4]/div[@id='signoffmenu']",document.getElementsByTagName('body')[0]);
+		Custom_Speak(box(node[0]),6);
 	}
+	
+	
 	// Shortcut Key Shift + Z for Sign Up Now 
 	if(evt.shiftKey && (evt.keyCode==90 || evt.keyCode==122))
 	{
@@ -444,41 +469,38 @@ axsSkel.keyHandler = function(evt)
 		{
 			evt.preventDefault(); 
 		}
-	var node=axsSkel.axsJAXObj.evalXPath("//form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebosignupcontent']/div[@id='signupnow']",document.getElementsByTagName('body')[0]);
-	Custom_Speak(box(node[0]),7);
+		var node=axsMeebo.axsJAXObj.evalXPath("//form[@id='frontpagecontainer']/div[@id='frontpage']/div[3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebosignupcontent']/div[@id='signupnow']",document.getElementsByTagName('body')[0]);
+		Custom_Speak(box(node[0]),7);
 	}
+	
+	
 	//The shortcut key Shift and F helps user to search friends
 	if(evt.shiftKey && (evt.keyCode == 70 || evt.keyCode == 102) )
 	{
 		if( evt.preventDefault() )
 		{
-		evt.preventDefault();
+			evt.preventDefault();
 		}
-         axsSkel.axsJAXObj.speakText('Please Enter the Friend ID you want to search');
+    axsMeebo.axsJAXObj.speakText('Please Enter the Friend ID you want to search');
 		document.getElementById('bltoolbar').getElementsByTagName('input')[0].focus();
 	}
 
 	// Key: Shift + L : Online List
 	if( evt.shiftKey && (evt.keyCode == 76 || evt.keyCode == 108))
 	{
-		var s = '';
+		var s = '<div style="color: transparent;">';
 		var i;
-		var xpath = '//div[@id=\'buddylistwin\']/div[@id=\'content\']/div[not(@id=\'offlinebgroup-meebo-offline-group\')]/div/div[@id]/div[2]/div[@id]/div/span[2]';
-		var liveRegions = axsSkel.axsJAXObj.evalXPath(xpath,document.body);
+		var xpath = '//div[@id=\'buddylistwin\']/div[@id=\'content\']/div[@id=\'buddies\']/div/div[not(@id=\'offlinebgroup-meebo-offline-group\')]/div[2]/div[@id]/div/span[2]';
+		var liveRegions = axsMeebo.axsJAXObj.evalXPath(xpath,document.body);
 		for ( i=0, lr; lr = liveRegions[i]; i++)
 		{
 			if (i != 0)
 			{
-				s += " , ";
-				s += "and";
-				s += " , ";
-				s += lr.innerHTML.split('>').join('').split('<').join('');
+				s += " , and , "  + lr.innerHTML.split('>').join('').split('<').join('');
 			}
-		
 		}
-		//alert("The count is" + count);
-		axsSkel.axsJAXObj.speakText('You have' + i + ' friends Online. Your Online Friends are' + s.forVoice());
-		//axsSkel.axsJAXObj.speakText(s.forVoice());
+		s+= '</div>'
+		axsMeebo.axsJAXObj.speakText('You have' + i + ' friends Online. Your Online Friends are' + s.forVoice());
 	}
 
 	// Key: Shift + O : Offline List
@@ -486,19 +508,15 @@ axsSkel.keyHandler = function(evt)
 	{
 		var s = '';
 		var xpath = '//div[@id=\'buddylistwin\']/div[@id=\'content\']/div[@id=\'buddies\']/div/div[@id=\'offlinebgroup-meebo-offline-group\']/div[2]/div[@id]/div/span[2]';
-		var liveRegions = axsSkel.axsJAXObj.evalXPath(xpath,document.body);
+		var liveRegions = axsMeebo.axsJAXObj.evalXPath(xpath,document.body);
 		for ( var i=0, lr; lr = liveRegions[i]; i++)
 		{
 			if (i != 0)
 			{
-				s += " , ";
-				s += "and";
-				s += " , ";
-				s += lr.innerHTML.split('>').join('').split('<').join('');
+				s += " , and , "  + lr.innerHTML.split('>').join('').split('<').join('');
 			}
-			axsSkel.axsJAXObj.speakText('You have ' + i +' friends Offline. Your Offline Friends are' + s.forVoice());
 		}
-				//alert(i);
+		axsMeebo.axsJAXObj.speakText('You have ' + i +' friends Offline. Your Offline Friends are ' + s.forVoice());
 	}
 	
 	// Key: Shift + U : Status Message
@@ -506,11 +524,11 @@ axsSkel.keyHandler = function(evt)
 	{
 		var s = '';
 		var xpath = '//div[@id=\'buddylistwin\']/div[@id=\'content\']/div[@id=\'statusmenu\']/div[2]/div[@id]/span';
-		var liveRegions = axsSkel.axsJAXObj.evalXPath(xpath,document.body);
+		var liveRegions = axsMeebo.axsJAXObj.evalXPath(xpath,document.body);
 		for ( var i=0, lr; lr = liveRegions[i]; i++)
 		{
-			s += lr.innerHTML;
-			axsSkel.axsJAXObj.speakText('Your status is' + s.forVoice());
+			s += lr.innerHTML.split('>').join('').split('<').join('');
+			axsMeebo.axsJAXObj.speakText('Your status is' + s.forVoice());
 		}
 	}
 
@@ -529,55 +547,45 @@ axsSkel.keyHandler = function(evt)
 		{
 			if( evt.target.parentNode.parentNode.parentNode.parentNode )
 			{
-				try{
-
+				// Meebo's conversation history div has different code for each reply. The foll. code
+				// refers to that div and then tries to brute force extract content from each
+				// individual reply.
+				try
+				{
 					var msgWin = evt.target.parentNode.parentNode.parentNode.parentNode;
 					var msgName = msgWin.getAttribute("caption");
-					//alert(4);
+
 					var msgChatLog = msgWin.childNodes[0].childNodes[4];
-					//alert( msgChatLog.innerHTML );
-					//alert(5);
-					////div[@id='gtalk-brian.vdsouza@gmail.com:malani@gmail.com/meebo-im']/div/div//span/text()
-					var msgs = axsSkel.axsJAXObj.evalXPath("//div[@class='uiImHistory']//span/text()",msgWin);
-					//alert(msgs.length);
-					//alert(msgs.join(', '));
+					var msgs = axsMeebo.axsJAXObj.evalXPath("//div[@class='uiImHistory']//span/text()",msgWin);
 
 					var myID = String(msgWin.getAttribute("id"));
 					myID = myID.substr( myID.indexOf(':')+1, myID.length);
 					if( myID.indexOf('-') > -1 ) { myID = myID.substr( 0, myID.indexOf('-') ); }
-					//if( myID.indexOf('@') > -1 ) { myID = myID.substr( 0, myID.indexOf('@') ); }
-					
-					//alert( myID );
 				
 					var convo_text = [];
 					var u, m, t;
 					for( var i=0; i < msgs.length; i+=2 )
-					{	u = '';
+					{
+						// u = user, m = message, t = timestamp
+						u = '';
 						m = '';
 						t = '';
 
 						u = String(msgs[i].nodeValue);
 						m = String(msgs[i+1].nodeValue);
 						t = u.substr(1, 5).Trim();
-						//if( u.lastIndexOf(':') > -1 ) { u = u.substr(0, u.lastIndexOf(':')); }
-						//if( u.indexOf('@') > -1 ) { u = u.substr(0, u.indexOf('@')); }
-						//u = u.replace(/\[\d{2}([:])\d{2}\]/gi, '').Trim();
+
 						u = u.substr( 8, u.length );
-
-						//alert( t + ' ' + u + '\n' + m );
-
+						// if message was sent by myself, replace my id with 'You';
 						if( u.toLowerCase() == myID ) u = 'You';
 						convo_text.push( 'at ' + t + ', ' + u + ' said, ' + m );
-
 					}
 				}
 				catch(e){}
 				if( convo_text.length == 0 )
-					axsSkel.axsJAXObj.speakText('No messages have been exchanged as yet.');
+					axsMeebo.axsJAXObj.speakText('No messages have been exchanged as yet.');
 				else
-					axsSkel.axsJAXObj.speakText(convo_text.join(', '));
-				//Log(convo_text.join(']['));
-				
+					axsMeebo.axsJAXObj.speakText(convo_text.join(', '));
 			}
 		}
 		return false;
@@ -588,7 +596,7 @@ axsSkel.keyHandler = function(evt)
 	{
 		if( sTarget == 'span')
 		{
-			axsSkel.CallOutBuddyName(evt.target);
+			axsMeebo.callOutBuddyName(evt.target);
 		}
 	}
 
@@ -596,16 +604,18 @@ axsSkel.keyHandler = function(evt)
 
 
 
-    if (evt.keyCode == 27){ // ESC
-    axsSkel.axsJAXObj.lastFocusedNode.blur();
+	// ESC
+  if (evt.keyCode == 27)
+	{
+		// Degrade if not element was selected
+		try{axsMeebo.axsJAXObj.lastFocusedNode.blur();}
+		catch (e){}
     return false;
 	}
 	
-  if (axsSkel.axsJAXObj.inputFocused) return true;
+  if (axsMeebo.axsJAXObj.inputFocused) return true;
 
-  var command = axsSkel.keyCodeMap[evt.keyCode] ||
-                axsSkel.charCodeMap[evt.charCode];
-
+  var command = axsMeebo.keyCodeMap[evt.keyCode] || axsMeebo.charCodeMap[evt.charCode];
   if (command) return command();
 
   return true;
@@ -614,7 +624,7 @@ axsSkel.keyHandler = function(evt)
 /**
  * Map from key codes to functions
  */
-axsSkel.keyCodeMap = {
+axsMeebo.keyCodeMap = {
   // Map additional keyboard behavior that involves key codes here
 };
 
@@ -623,77 +633,91 @@ axsSkel.keyCodeMap = {
  * @return {boolean} Always returns false to indicate 
  *                   that the keycode has been handled.
  */
-axsSkel.charCodeMap = {
+axsMeebo.charCodeMap = {
   // Map additional keyboard behavior that involves char codes here
   // - (minus symbol)
   45 : function() {
-         axsSkel.magSize -= 0.10;
-         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+         axsMeebo.magSize -= 0.10;
+         axsMeebo.axsLensObj.setMagnification(axsMeebo.magSize);
          return false;
        },
   // = (equal symbol)
   61 : function() {
-         axsSkel.magSize += 0.10;
-         axsSkel.axsLensObj.setMagnification(axsSkel.magSize);
+         axsMeebo.magSize += 0.10;
+         axsMeebo.axsLensObj.setMagnification(axsMeebo.magSize);
          return false;
        },
 
-/* Code to get String for (?) - Help */ 
+	// Code to get String for (?) - Help
   63 : function() {
-		 // Speak out the list of all the hotkeys available to the user
-         var helpStr = axsSkel.HELP;
-			 helpStr += "Escape plus A , for aim  . ";
-			 helpStr += "Escape plus Y , for yahoo  . ";
-			 helpStr += "Escape plus G , for gtalk  . ";
-			 helpStr += "Escape plus M , for msn  . ";
-			 helpStr += "Escape plus O , for meebo  . ";
-			 helpStr += "I , for Entering in Invisible  Mode . ";
-			 helpStr += "R , for Entering in Remember Me  Mode . ";
-		 
-         axsSkel.axsJAXObj.speakTextViaNode(helpStr);		// speak out the help string
-         return false;
-       },
-       
-// Handler for Escape + I to check invisible or uncheck the invisible checkbox
-     105: function() {
-              	 
-           	   var str = "sign on as invisible";
-               var checkboxXpath  = "//div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/table[@id='autoinvisible']/tbody/tr/td[2]/input[@id='invisiblecheck']"; // getting the xpath of the required checkbox
-          	
-               var chkbox = axsSkel.axsJAXObj.evalXPath(checkboxXpath, document.getElementsByTagName("body")[0] )[0]; // catching the checkbox using the xpath
-               
-			   if (chkbox.checked==true){	
-                 		chkbox.checked = false;		// uncheck the checkbox
-                 		str += "not checked";		// prepare string
-                 	}
-               else if (chkbox.checked==false){	
-                 		chkbox.checked = true;		// check the checkbox
-                 		str += " checked"			// prepare string
-                 	}
-                 	
-             axsSkel.axsJAXObj.speakTextViaNode(str);		// speak the action which has been accomplished
-             return false;
-        },
-        
-// Handler for Escape + R to check or uncheck remember me 
-	     114: function(){
-			 var str = "remember meebo information";
-	         var checkboxXpath  = "//div[@id='frontpage']/div[@class='right-side' and position()=3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[@class='meebologinform' and position()=2]/div[@class='meebobuttons' and @id='meebosubmit']/table/tbody/tr/td[2]/input[@id='remembermecheck']";	// getting the xpath of the required checkbox
-	          	
-             var chkbox = axsSkel.axsJAXObj.evalXPath(checkboxXpath, document.getElementsByTagName("body")[0] )[0];
-                 
-  			 if (chkbox.checked==true){
-					chkbox.checked = false;			// uncheck the checkbox
-					str += "not checked";					// prepare string
-					}
-			else if (chkbox.checked==false){		
-					chkbox.checked = true;			// uncheck the checkbox
-					str += " checked"				// prepare string
-					}
-			
-		  axsSkel.axsJAXObj.speakTextViaNode(str);		// speak the action which has been accomplished
-		  return false;
-        }
+				// Speak out the list of all the hotkeys available to the user
+				var helpStr = axsMeebo.HELP;
+				helpStr += "Escape plus A , for aim  . ";
+				helpStr += "Escape plus Y , for yahoo  . ";
+				helpStr += "Escape plus G , for gtalk  . ";
+				helpStr += "Escape plus M , for msn  . ";
+				helpStr += "Escape plus O , for meebo  . ";
+				helpStr += "Escape plus S , for myspace  . ";
+				helpStr += "I , for Entering in Invisible  Mode . ";
+				helpStr += "R , for Entering in Remember Me  Mode . ";
+				helpStr += "Enter , for signing in for IM/Meebo . ";
+				helpStr += "Shift plus A , for Add Buddy  .";
+				helpStr += "Shift plus I , for IM someone  .";
+				helpStr += "Shift plus R , for Remove Buddy  .";
+				helpStr += "Shift plus C , for Start Group Chat  .";
+				helpStr += "Shift plus M , for Sign on  .";
+				helpStr += "Shift plus N , for Sign off  .";
+				helpStr += "Shift plus L , for List of Buddies online  .";
+				helpStr += "Shift plus O , for List of Buddies offline  .";
+				helpStr += "Shift plus S , for Proofread the conversation  .";
+				helpStr += "Shift plus P , for Say the entire conversation  .";
+				helpStr += "Shift plus F , for Find a Buddy  .";
+				helpStr += "Shift plus U , for Say your current status  .";
+				helpStr += "Shift plus Z , for Sign up for a new Meebo account  .";
+					axsMeebo.axsJAXObj.speakTextViaNode(helpStr);		// speak out the help string
+					return false;
+		},
+
+
+	// Handler for Escape + I to check invisible or uncheck the invisible checkbox
+	105: function() {
+			var str = "sign on as invisible";
+			var checkboxXpath  = "//div[@id='frontpage']/div[@id='loginboxes']/div[@id='loginboxescontent']/table[@id='autoinvisible']/tbody/tr/td[2]/input[@id='invisiblecheck']"; // getting the xpath of the required checkbox
+		
+			var chkbox = axsMeebo.axsJAXObj.evalXPath(checkboxXpath, document.getElementsByTagName("body")[0] )[0]; // catching the checkbox using the xpath
+			 
+			if (chkbox.checked==true){	
+						chkbox.checked = false;		// uncheck the checkbox
+						str += "not checked";		// prepare string
+			}
+      else if (chkbox.checked==false){	
+						chkbox.checked = true;		// check the checkbox
+						str += " checked"			// prepare string
+			}
+							
+			axsMeebo.axsJAXObj.speakTextViaNode(str);		// speak the action which has been accomplished
+			return false;
+	},
+		
+	// Handler for Escape + R to check or uncheck remember me 
+	114: function() {
+			var str = "remember meebo information";
+			var checkboxXpath  = "//div[@id='frontpage']/div[@class='right-side' and position()=3]/div[@id='meebologin']/div[@id='meebologinbox']/div[@id='meebologincontent']/div[@id='meebologincontentwrapper']/div[@class='meebologinform' and position()=2]/div[@class='meebobuttons' and @id='meebosubmit']/table/tbody/tr/td[2]/input[@id='remembermecheck']";	// getting the xpath of the required checkbox
+					
+			var chkbox = axsMeebo.axsJAXObj.evalXPath(checkboxXpath, document.getElementsByTagName("body")[0] )[0];
+						 
+			if (chkbox.checked==true){
+				chkbox.checked = false;			// uncheck the checkbox
+				str += "not checked";					// prepare string
+			}
+			else if (chkbox.checked==false) {		
+				chkbox.checked = true;			// uncheck the checkbox
+				str += " checked"				// prepare string
+			}
+
+		axsMeebo.axsJAXObj.speakTextViaNode(str);		// speak the action which has been accomplished
+		return false;
+	}
 };
 
 /**
@@ -701,17 +725,16 @@ axsSkel.charCodeMap = {
  * and should not trigger hot key commands.
  * @param {Object} evt A Focus event
  */
-axsSkel.focusHandler = function(evt)
+axsMeebo.focusHandler = function(evt)
 {
 	var sTarget = String(evt.target.tagName).toLowerCase();
-  axsSkel.lastFocusedNode = evt.target;
+  axsMeebo.lastFocusedNode = evt.target;
   if ((evt.target.tagName == 'INPUT') ||
       (evt.target.tagName == 'TEXTAREA')){
-    axsSkel.inputFocused = true;
+    axsMeebo.inputFocused = true;
   }
 
 
-	// ----------------------------------------------------------------------
 	// Call out user's name when an im-window is focussed.
 	if( evt.target.tagName == "TEXTAREA" ) 
 	{
@@ -720,12 +743,9 @@ axsSkel.focusHandler = function(evt)
 			// this window is an IM Window. get the person's name and speak it out.
 			var user = String(evt.target.parentNode.parentNode.parentNode.parentNode.getAttribute("caption"));
 			//alert(user);
-			axsSkel.axsJAXObj.speakText('Talking to ' + user.forVoice());
+			axsMeebo.axsJAXObj.speakText('Talking to ' + user.forVoice());
 		}
 	}
-
-
-
 };
 
 /**
@@ -733,14 +753,12 @@ axsSkel.focusHandler = function(evt)
  * commands.
  * @param {Object} evt A Blur event
  */
-axsSkel.blurHandler = function (evt){
-  axsSkel.lastFocusedNode = null;
+axsMeebo.blurHandler = function (evt){
+  axsMeebo.lastFocusedNode = null;
   if ((evt.target.tagName == 'INPUT') ||
       (evt.target.tagName == 'TEXTAREA')){
-    axsSkel.inputFocused = false;
+    axsMeebo.inputFocused = false;
   }
 };
 
-
-
-axsSkel.init();
+axsMeebo.init();
